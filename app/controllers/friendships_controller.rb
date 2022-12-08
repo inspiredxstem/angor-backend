@@ -1,5 +1,5 @@
 class FriendshipsController < ApplicationController
-
+	skip_before_action :authorize
     def index
         @friends = current_user.friends
         render json: @friends, status: :ok
@@ -17,7 +17,7 @@ class FriendshipsController < ApplicationController
     end
 
     def destroy
-        @friend = Friendship.find_by(user_id: params[:user_id], friend_id: params[:friend_id])
+        @friend = Friendship.find_by(user_id: current_user, friend_id: params[:friend_id])
         @friend.destroy
         head :no_content
     end
